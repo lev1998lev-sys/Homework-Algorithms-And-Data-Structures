@@ -6,9 +6,14 @@ def findMaxUnderBoundary(inList, topBoundary):
 
     currentMax = -sys.maxsize
     for elem in inList:
-        if elem <= topBoundary:  #в условии вместо "<" теперь используется "<="
+        if elem < topBoundary:  #в условии вместо "<" теперь используется "<="
             currentMax = max(currentMax, elem)
-    return currentMax
+
+    accountOfMaxElem = list()
+    for elem in inList:
+        if elem == currentMax:
+            accountOfMaxElem.append(elem);
+    return accountOfMaxElem
 
 def findTopElement(inList, numberOfElements):
     if (not isinstance(inList, list)) or (not isinstance(numberOfElements, int)):
@@ -17,15 +22,15 @@ def findTopElement(inList, numberOfElements):
         raise ValueError("Number of elements cannot be more size of list")
     topElements = list()
     previousMax = sys.maxsize
-
-    for i in range(numberOfElements):
+    i = 0
+    while(i < numberOfElements):
         currentMax = findMaxUnderBoundary(inList, previousMax)
-        previousMax = currentMax
-        topElements.append(currentMax)
+        i += len(currentMax)
+        previousMax = currentMax[0]
+        topElements += currentMax
 
-    return topElements
+    return topElements[:numberOfElements]
 
-ages = [100, 100, 100, 55, 8]
-top3ages = findTopElement(ages, 3)
+top3ages = findTopElement([100, 100, 100, 55, 8], 3)
 
 print(top3ages)
